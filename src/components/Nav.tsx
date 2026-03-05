@@ -10,6 +10,7 @@ export function Nav() {
   useEffect(() => {
     setNavOpen(false)
     setExpandedId(null)
+    window.scrollTo(0, 0)
   }, [location.pathname])
 
   const toggleDropdown = (id: string) => {

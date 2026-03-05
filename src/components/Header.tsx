@@ -12,7 +12,7 @@ export function Header() {
           </Link>
         </div>
         <Nav />
-        <div className="site-header__actions">
+        <div className="site-header__actions site-header__actions--donate">
           <Link to="/donate" className="btn-donate">
             Donate Now
           </Link>

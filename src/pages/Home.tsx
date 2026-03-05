@@ -15,30 +15,6 @@ const IconHeart = () => (
   </svg>
 )
 
-const IconUsers = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-    <circle cx="9" cy="7" r="4" />
-    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-  </svg>
-)
-
-const IconCalendar = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-    <line x1="16" y1="2" x2="16" y2="6" />
-    <line x1="8" y1="2" x2="8" y2="6" />
-    <line x1="3" y1="10" x2="21" y2="10" />
-  </svg>
-)
-
-const IconStar = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-  </svg>
-)
-
 const IconPhone = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
@@ -123,14 +99,6 @@ const IconExternal = () => (
   </svg>
 )
 
-// ─── Impact Stats Data ─────────────────────────────────────────────────────────
-const impactStats = [
-  { icon: <IconHeart />, value: '40+', label: 'Children Supported' },
-  { icon: <IconUsers />, value: '15+', label: 'Dedicated Educators' },
-  { icon: <IconCalendar />, value: '2016', label: 'Established' },
-  { icon: <IconStar />, value: '5+', label: 'Therapy Programs' },
-]
-
 const conditions = ['Autism', 'ADHD', 'Cerebral Palsy', 'Down Syndrome', 'Learning Difficulty']
 
 const ctaHighlights = [
@@ -154,21 +122,14 @@ export function Home() {
         </div>
       </section>
 
-      {/* ── Impact Stats Bar ──────────────────────────────────────────── */}
-      <div className="home-impact-stats">
-        <div className="container">
-          {impactStats.map((stat, i) => (
-            <div key={i} className="home-impact-stats__item">
-              <div className="home-impact-stats__icon">{stat.icon}</div>
-              <div className="home-impact-stats__value">{stat.value}</div>
-              <div className="home-impact-stats__label">{stat.label}</div>
-            </div>
-          ))}
+      {/* ── Who we are + About ─────────────────────────────────────────── */}
+      <section className="section section--about-video" style={{ paddingTop: '1.5rem' }}>
+        <div className="container" style={{ textAlign: 'center', marginBottom: '2.25rem' }}>
+          <p className="section__label" style={{ marginBottom: '0.75rem', color: '#000' }}>Who we are</p>
+          <h2 className="section__title section__title--large" style={{ color: 'var(--color-primary)', fontWeight: 700, marginBottom: 0 }}>
+            Nanjil Oasis Happy Centre
+          </h2>
         </div>
-      </div>
-
-      {/* ── About + Video ─────────────────────────────────────────────── */}
-      <section className="section section--about-video">
         <div className="container home-about-grid">
 
           {/* Copy column */}
