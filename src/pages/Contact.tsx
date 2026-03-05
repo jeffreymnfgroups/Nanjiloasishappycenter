@@ -11,7 +11,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 
-delete L.Icon.Default.prototype._getIconUrl
+delete (L.Icon.Default.prototype as { _getIconUrl?: string })._getIconUrl
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
   iconUrl: markerIcon,
@@ -19,7 +19,7 @@ L.Icon.Default.mergeOptions({
 })
 
 // Konam, Nagercoil coordinates
-const CENTER = [8.1833, 77.4119]
+const CENTER: [number, number] = [8.1833, 77.4119]
 
 export function Contact() {
   return (
