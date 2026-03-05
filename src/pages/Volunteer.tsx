@@ -1,7 +1,7 @@
 import { PageMeta } from '../components/PageMeta'
 import { PageHero } from '../components/PageHero'
 import { email, phone, phoneDisplay } from '../constants/site'
-import { pageHeroImages, volunteerRoleImages } from '../constants/images'
+import { pageHeroImages, serviceImages } from '../constants/images'
 
 // ── Inline SVG Icons ──────────────────────────────────────
 const IconPalette = () => (
@@ -52,7 +52,9 @@ const IconHandshake = () => (
   </svg>
 )
 
-// ── Data ──────────────────────────────────────────────────
+// Role order matches: Art, Early Intervention, Physio, Speech
+const volunteerRoleImageIndices = [7, 0, 2, 1] as const
+
 const volunteerRoles = [
   { Icon: IconPalette, title: 'Art & Creative Therapy',    description: 'Help children express themselves through painting, music, and creative activities.' },
   { Icon: IconBook,    title: 'Special Education Support', description: 'Assist educators in delivering tailored lessons that match each child\'s unique learning pace.' },
@@ -131,12 +133,14 @@ export function Volunteer() {
           <p className="section__label">Ways to Help</p>
           <h2 className="section__title">Choose Your Role</h2>
           <div className="vol-roles__grid">
-            {volunteerRoles.map(({ title, description }, i) => (
+            {volunteerRoles.map(({ title, description }, i) => {
+              const img = serviceImages[volunteerRoleImageIndices[i]]
+              return (
               <div className="vol-role-card" key={title}>
                 <div className="vol-role-card__image-wrap">
                   <img
-                    src={volunteerRoleImages[i].url}
-                    alt={volunteerRoleImages[i].alt}
+                    src={img.url}
+                    alt={img.alt}
                     className="vol-role-card__image"
                     loading="lazy"
                   />
@@ -144,7 +148,7 @@ export function Volunteer() {
                 <h3 className="vol-role-card__title">{title}</h3>
                 <p className="vol-role-card__desc">{description}</p>
               </div>
-            ))}
+            )})}
           </div>
         </div>
       </section>
