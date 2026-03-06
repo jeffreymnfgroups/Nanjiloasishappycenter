@@ -14,6 +14,8 @@ export const donationBank = {
 } as const
 
 export const donationGpay = '9597070301'
+export const donationGpayUpiId = 'rajanddrama-2@oksbi'
+export const donationGpayName = 'Nanjil Oasis Happy Centre'
 
 export const socialLinks = [
   { label: 'Instagram', href: 'https://www.instagram.com/nanjil_oasis?utm_source=qr&igsh=MW50aWZyemttcHJyZg%3D%3D', icon: '/assets/instagram.png' },

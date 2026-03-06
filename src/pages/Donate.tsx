@@ -1,12 +1,35 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PageMeta } from '../components/PageMeta'
-import { donationBank, donationGpay } from '../constants/site'
+import { donationBank, donationGpay, donationGpayUpiId, donationGpayName } from '../constants/site'
 import { donateHeroImage, donateImpactImage } from '../constants/images'
 
 const gpayTel = `+91${donationGpay}`
 
+function isMobile(): boolean {
+  if (typeof navigator === 'undefined') return false
+  const ua = navigator.userAgent || navigator.vendor
+  return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua.toLowerCase())
+}
+
+function isIOS(): boolean {
+  if (typeof navigator === 'undefined') return false
+  return /iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase())
+}
+
+function getPayToNumberLink(): string {
+  if (isIOS()) {
+    return `gpay://upi/pay?pa=${encodeURIComponent(donationGpayUpiId)}&pn=${encodeURIComponent(donationGpayName)}&cu=INR`
+  }
+  return `upi://pay?pa=${encodeURIComponent(donationGpayUpiId)}&pn=${encodeURIComponent(donationGpayName)}&cu=INR`
+}
+
 export function Donate() {
   const [copied, setCopied] = useState(false)
+  const [openGpayHref, setOpenGpayHref] = useState(`tel:${gpayTel}`)
+
+  useEffect(() => {
+    setOpenGpayHref(isMobile() ? getPayToNumberLink() : `tel:${gpayTel}`)
+  }, [])
 
   const copyAccountNumber = () => {
     navigator.clipboard.writeText(donationBank.accountNumber).then(() => {
@@ -204,7 +227,7 @@ export function Donate() {
                   <li>Tap <strong>New payment → Mobile number</strong></li>
                   <li>Enter the number above &amp; confirm amount</li>
                 </ol>
-                <a href={`tel:${gpayTel}`} className="btn btn--primary donate-gpay__cta" aria-label="Open GPay to donate">
+                <a href={openGpayHref} className="btn btn--primary donate-gpay__cta" aria-label="Open GPay to pay this number">
                   <img src="/assets/googlepay.png" alt="" width="20" height="20" className="donate-gpay-icon donate-gpay-icon--btn" aria-hidden="true" />
                   Open GPay
                 </a>
