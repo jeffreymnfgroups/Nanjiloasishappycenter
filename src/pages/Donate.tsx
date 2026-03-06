@@ -1,12 +1,37 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PageMeta } from '../components/PageMeta'
 import { donationBank, donationGpay } from '../constants/site'
 import { donateHeroImage, donateImpactImage } from '../constants/images'
 
 const gpayTel = `+91${donationGpay}`
+const gpayPayeeName = 'Nanjil Oasis'
+const gpayUpiId = `${donationGpay}@okaxis`
+
+function isMobile(): boolean {
+  if (typeof navigator === 'undefined') return false
+  const ua = navigator.userAgent || navigator.vendor
+  return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua.toLowerCase())
+}
+
+function isIOS(): boolean {
+  if (typeof navigator === 'undefined') return false
+  return /iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase())
+}
+
+function getGpayOrUpiLink(): string {
+  if (isIOS()) {
+    return `gpay://upi/pay?pa=${encodeURIComponent(gpayUpiId)}&pn=${encodeURIComponent(gpayPayeeName)}&cu=INR`
+  }
+  return `upi://pay?pa=${encodeURIComponent(gpayUpiId)}&pn=${encodeURIComponent(gpayPayeeName)}&cu=INR`
+}
 
 export function Donate() {
   const [copied, setCopied] = useState(false)
+  const [gpayHref, setGpayHref] = useState(`tel:${gpayTel}`)
+
+  useEffect(() => {
+    setGpayHref(isMobile() ? getGpayOrUpiLink() : `tel:${gpayTel}`)
+  }, [])
 
   const copyAccountNumber = () => {
     navigator.clipboard.writeText(donationBank.accountNumber).then(() => {
@@ -204,7 +229,7 @@ export function Donate() {
                   <li>Tap <strong>New payment → Mobile number</strong></li>
                   <li>Enter the number above &amp; confirm amount</li>
                 </ol>
-                <a href={`tel:${gpayTel}`} className="btn btn--primary donate-gpay__cta">
+                <a href={gpayHref} className="btn btn--primary donate-gpay__cta" aria-label="Open GPay to donate">
                   <img src="/assets/googlepay.png" alt="" width="20" height="20" className="donate-gpay-icon donate-gpay-icon--btn" aria-hidden="true" />
                   Open GPay
                 </a>

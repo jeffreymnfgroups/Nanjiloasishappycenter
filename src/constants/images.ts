@@ -99,13 +99,28 @@ export const volunteerRoleImages: ImageAsset[] = [
   { url: unsplash('1571019613454-1cb0f6b5884c', 600), alt: 'Speech and communication support' },
 ]
 
-/** Gallery: local photos images1 (1)–(18) */
+/** Gallery: local photos images1 (1)–(29) with category for sections */
+export type GalleryCategory = 'events' | 'therapy' | 'daily' | 'celebrations'
+
+export interface GalleryImage extends ImageAsset {
+  category: GalleryCategory
+}
+
+export const GALLERY_CATEGORY_ORDER: GalleryCategory[] = ['events', 'therapy', 'daily', 'celebrations']
+
+export const GALLERY_CATEGORY_LABELS: Record<GalleryCategory, string> = {
+  events: 'Events',
+  therapy: 'Therapy & Activities',
+  daily: 'Daily Life',
+  celebrations: 'Celebrations',
+}
+
 const galleryAlts: string[] = [
   'Breaking Barriers – ABLEify award ceremony at Nanjil Oasis',
   'Event at Nanjil Oasis',
   'Gallery moment',
   'Event at Nanjil Oasis',
-  'Gallery moment',
+  'Activity at the centre',
   'Event at Nanjil Oasis',
   'Gallery moment',
   'Event at Nanjil Oasis',
@@ -119,6 +134,21 @@ const galleryAlts: string[] = [
   'Event at Nanjil Oasis',
   'Gallery moment',
   'Sharbat stall – life at the centre',
+  'Therapy session at Nanjil Oasis',
+  'Activity at the centre',
+  'Celebration at Nanjil Oasis',
+  'Therapy and support',
+  'Daily life at the centre',
+  'Event at Nanjil Oasis',
+  'Celebration moment',
+  'Activity and learning',
+  'Therapy session',
+  'Life at the centre',
+  'Celebration at Nanjil Oasis',
+  'Gallery moment at Nanjil Oasis',
+  'Event at Nanjil Oasis',
+  'Event at Nanjil Oasis',
+  'Event at Nanjil Oasis',
 ]
 
 const galleryUrls: string[] = [
@@ -126,7 +156,7 @@ const galleryUrls: string[] = [
   '/assets/images1 (2).jpeg',
   '/assets/images1 (3).jpeg',
   '/assets/images1 (4).jpeg',
-  '/assets/images1 (12).jpeg',
+  '/assets/images1 (5).jpeg',
   '/assets/images1 (6).jpeg',
   '/assets/images1 (7).jpeg',
   '/assets/images1 (8).jpeg',
@@ -140,9 +170,32 @@ const galleryUrls: string[] = [
   '/assets/images1 (16).jpeg',
   '/assets/images1 (17).jpeg',
   '/assets/images1 (18).jpeg',
+  '/assets/images1 (19).jpeg',
+  '/assets/images1 (20).jpeg',
+  '/assets/images1 (21).jpeg',
+  '/assets/images1 (22).jpeg',
+  '/assets/images1 (23).jpeg',
+  '/assets/images1 (24).jpeg',
+  '/assets/images1 (25).jpeg',
+  '/assets/images1 (26).jpeg',
+  '/assets/images1 (27).jpeg',
+  '/assets/images1 (28).jpeg',
+  '/assets/images1 (29).jpeg',
+  '/assets/images1 (30).jpeg',
+  '/assets/images1 (31).jpeg',
+  '/assets/images1 (32).jpeg',
 ]
 
-export const galleryImages: ImageAsset[] = galleryUrls.map((url, i) => ({
+const galleryCategories: GalleryCategory[] = [
+  'events', 'events', 'events', 'events', 'events', 'events', 'events',
+  'therapy', 'therapy', 'therapy', 'therapy', 'therapy', 'therapy', 'therapy',
+  'daily', 'daily', 'daily', 'daily', 'daily', 'daily', 'daily',
+  'celebrations', 'celebrations', 'celebrations', 'celebrations', 'celebrations', 'celebrations', 'celebrations', 'celebrations',
+  'events', 'events', 'events',
+]
+
+export const galleryImages: GalleryImage[] = galleryUrls.map((url, i) => ({
   url: url.startsWith('http') ? url : encodeURI(url),
   alt: galleryAlts[i],
+  category: galleryCategories[i],
 }))

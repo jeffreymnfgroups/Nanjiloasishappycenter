@@ -1,7 +1,12 @@
 import { useState, useCallback, useEffect } from 'react'
 import { PageMeta } from '../components/PageMeta'
 import { PageHero } from '../components/PageHero'
-import { galleryImages, pageHeroImages } from '../constants/images'
+import {
+  galleryImages,
+  pageHeroImages,
+  GALLERY_CATEGORY_ORDER,
+  GALLERY_CATEGORY_LABELS,
+} from '../constants/images'
 import { youtubeVideos } from '../constants/videos'
 
 // ─── Inline SVG Icons ─────────────────────────────────────────────────────────
@@ -92,12 +97,29 @@ const IconExternalLink = () => (
 
 type FilterTab = 'all' | 'photos' | 'videos'
 
+type GalleryCategoryOrAll = import('../constants/images').GalleryCategory | 'all'
+
+// First image per category for folder thumbnails
+function getFolderThumbnails(): Record<GalleryCategoryOrAll, { url: string; alt: string }> {
+  const all = galleryImages[0]
+  const byCat = {} as Record<GalleryCategoryOrAll, { url: string; alt: string }>
+  byCat.all = all ? { url: all.url, alt: 'All photos' } : { url: '', alt: '' }
+  GALLERY_CATEGORY_ORDER.forEach(cat => {
+    const first = galleryImages.find(img => img.category === cat)
+    byCat[cat] = first ? { url: first.url, alt: first.alt } : byCat.all
+  })
+  return byCat
+}
+
+const folderThumbnails = getFolderThumbnails()
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function Gallery() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [activeVideo, setActiveVideo]     = useState<string | null>(null)
   const [filter, setFilter]               = useState<FilterTab>('all')
+  const [selectedFolder, setSelectedFolder] = useState<GalleryCategoryOrAll>('all')
 
   const close   = useCallback(() => setSelectedIndex(null), [])
   const goPrev  = useCallback(() =>
@@ -117,10 +139,15 @@ export function Gallery() {
     return () => window.removeEventListener('keydown', onKey)
   }, [selectedIndex, close, goPrev, goNext])
 
-  // Lock body scroll
+  // Lock body scroll and hide header when lightbox or video open
   useEffect(() => {
-    document.body.style.overflow = selectedIndex !== null || activeVideo !== null ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    const fullscreen = selectedIndex !== null || activeVideo !== null
+    document.body.style.overflow = fullscreen ? 'hidden' : ''
+    document.body.classList.toggle('gallery-fullscreen', fullscreen)
+    return () => {
+      document.body.style.overflow = ''
+      document.body.classList.remove('gallery-fullscreen')
+    }
   }, [selectedIndex, activeVideo])
 
   return (
@@ -164,7 +191,7 @@ export function Gallery() {
         </div>
       </section>
 
-      {/* ── Photo Grid ── */}
+      {/* ── Photo Grid (folder strip + sections by category, masonry) ── */}
       {(filter === 'all' || filter === 'photos') && (
         <section className="section gallery-section" id="activities">
           <div className="container">
@@ -173,23 +200,95 @@ export function Gallery() {
             <p className="gallery-intro">
               Therapy, activities and life at Nanjil Oasis — Skating, Silambam, Yoga, Art, Dance, Music and more.
             </p>
-            <div className="gallery-grid">
-              {galleryImages.map((img, i) => (
+
+            {/* Folder strip: click a folder to show its images */}
+            <div className="gallery-folders">
+              <button
+                type="button"
+                className={`gallery-folder-card${selectedFolder === 'all' ? ' gallery-folder-card--active' : ''}`}
+                onClick={() => setSelectedFolder('all')}
+                aria-label="View all photos"
+              >
+                <div className="gallery-folder-card__thumb">
+                  <img src={folderThumbnails.all.url} alt={folderThumbnails.all.alt} loading="eager" decoding="async" />
+                </div>
+                <span className="gallery-folder-card__title">All</span>
+              </button>
+              {GALLERY_CATEGORY_ORDER.map(cat => (
                 <button
-                  key={i}
+                  key={cat}
                   type="button"
-                  className="gallery-item"
-                  onClick={() => setSelectedIndex(i)}
-                  aria-label={`View ${img.alt}`}
+                  className={`gallery-folder-card${selectedFolder === cat ? ' gallery-folder-card--active' : ''}`}
+                  onClick={() => setSelectedFolder(cat)}
+                  aria-label={`View ${GALLERY_CATEGORY_LABELS[cat]} photos`}
                 >
-                  <img src={img.url} alt={img.alt} loading="lazy" decoding="async" />
-                  <div className="gallery-item__overlay">
-                    <span className="gallery-item__expand"><IconExpand /></span>
-                    <span className="gallery-item__caption">{img.alt}</span>
+                  <div className="gallery-folder-card__thumb">
+                    <img src={folderThumbnails[cat].url} alt={folderThumbnails[cat].alt} loading="lazy" decoding="async" />
                   </div>
+                  <span className="gallery-folder-card__title">{GALLERY_CATEGORY_LABELS[cat]}</span>
                 </button>
               ))}
             </div>
+
+            {/* Category content: all sections or single folder */}
+            {selectedFolder === 'all'
+              ? GALLERY_CATEGORY_ORDER.map(cat => {
+                  const items = galleryImages
+                    .map((img, globalIndex) => ({ img, globalIndex }))
+                    .filter(({ img }) => img.category === cat)
+                  if (items.length === 0) return null
+                  return (
+                    <div key={cat} className="gallery-category-block">
+                      <h3 className="gallery-category-title">{GALLERY_CATEGORY_LABELS[cat]}</h3>
+                      <div className="gallery-grid gallery-grid--masonry">
+                        {items.map(({ img, globalIndex }) => (
+                          <button
+                            key={globalIndex}
+                            type="button"
+                            className="gallery-item"
+                            onClick={() => setSelectedIndex(globalIndex)}
+                            aria-label={`View ${img.alt}`}
+                          >
+                            <img src={img.url} alt={img.alt} loading="lazy" decoding="async" />
+                            <div className="gallery-item__overlay">
+                              <span className="gallery-item__expand"><IconExpand /></span>
+                              <span className="gallery-item__caption">{img.alt}</span>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })
+              : (() => {
+                  const cat = selectedFolder
+                  const items = galleryImages
+                    .map((img, globalIndex) => ({ img, globalIndex }))
+                    .filter(({ img }) => img.category === cat)
+                  if (items.length === 0) return null
+                  return (
+                    <div className="gallery-category-block">
+                      <h3 className="gallery-category-title">{GALLERY_CATEGORY_LABELS[cat]}</h3>
+                      <div className="gallery-grid gallery-grid--masonry">
+                        {items.map(({ img, globalIndex }) => (
+                          <button
+                            key={globalIndex}
+                            type="button"
+                            className="gallery-item"
+                            onClick={() => setSelectedIndex(globalIndex)}
+                            aria-label={`View ${img.alt}`}
+                          >
+                            <img src={img.url} alt={img.alt} loading="lazy" decoding="async" />
+                            <div className="gallery-item__overlay">
+                              <span className="gallery-item__expand"><IconExpand /></span>
+                              <span className="gallery-item__caption">{img.alt}</span>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })()}
           </div>
         </section>
       )}

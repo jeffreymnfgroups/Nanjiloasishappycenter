@@ -130,6 +130,17 @@ export function Home() {
             Nanjil Oasis Happy Centre
           </h2>
         </div>
+        <div className="container home-gallery-strip-wrap">
+          <div className="home-gallery-strip" aria-hidden="true">
+            <div className="home-gallery-strip__track">
+              {[...galleryImages, ...galleryImages].map((img, i) => (
+                <div key={i} className="home-gallery-strip__cell">
+                  <img src={img.url} alt={img.alt} loading="lazy" decoding="async" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
         <div className="container home-about-grid">
 
           {/* Copy column */}
