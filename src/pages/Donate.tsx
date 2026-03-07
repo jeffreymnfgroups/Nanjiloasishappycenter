@@ -218,6 +218,10 @@ export function Donate() {
               </div>
 
               <div className="donate-gpay__body">
+                <div className="donate-gpay__qr">
+                  <img src="/assets/GooglePayQR.png" alt="Scan to pay with Google Pay" width="200" height="200" className="donate-gpay__qr-img" loading="lazy" decoding="async" />
+                  <p className="donate-gpay__qr-label">Scan to pay with Google Pay</p>
+                </div>
                 <p className="donate-gpay__hint">Send to this GPay / UPI number</p>
                 <p className="donate-gpay__number">
                   <a href={`tel:${gpayTel}`}>{donationGpay}</a>

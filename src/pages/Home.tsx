@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { phone, phoneDisplay, email, servicesData } from '../constants/site'
 import { heroImage, serviceImages, galleryImages } from '../constants/images'
@@ -32,6 +33,13 @@ const IconArrowRight = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <line x1="5" y1="12" x2="19" y2="12" />
     <polyline points="12 5 19 12 12 19" />
+  </svg>
+)
+
+const IconArrowLeft = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <line x1="19" y1="12" x2="5" y2="12" />
+    <polyline points="12 19 5 12 12 5" />
   </svg>
 )
 
@@ -108,8 +116,20 @@ const ctaHighlights = [
 ]
 
 // ─── Component ────────────────────────────────────────────────────────────────
+// Four images: images1 (6) first, then (2), (3), (4) — gallery indices 5, 1, 2, 3
+const GALLERY_BLOCK_INDICES = [5, 1, 2, 3] as const
+
 export function Home() {
   const featuredVideo = youtubeVideos[0]
+  const [slideIndex, setSlideIndex] = useState(0)
+
+  const goPrev = () => setSlideIndex(i => (i === 0 ? 3 : i - 1))
+  const goNext = () => setSlideIndex(i => (i === 3 ? 0 : i + 1))
+
+  useEffect(() => {
+    const t = setInterval(() => setSlideIndex(i => (i === 3 ? 0 : i + 1)), 4000)
+    return () => clearInterval(t)
+  }, [])
 
   return (
     <>
@@ -130,14 +150,44 @@ export function Home() {
             Nanjil Oasis Happy Centre
           </h2>
         </div>
-        <div className="container home-gallery-strip-wrap">
-          <div className="home-gallery-strip" aria-hidden="true">
-            <div className="home-gallery-strip__track">
-              {[...galleryImages, ...galleryImages].map((img, i) => (
-                <div key={i} className="home-gallery-strip__cell">
-                  <img src={img.url} alt={img.alt} loading="lazy" decoding="async" />
-                </div>
-              ))}
+        <div className="container home-gallery-block">
+          <div className="home-gallery-block__frame">
+            <div className="home-gallery-block__main">
+              <img
+                src={galleryImages[GALLERY_BLOCK_INDICES[slideIndex]].url}
+                alt={galleryImages[GALLERY_BLOCK_INDICES[slideIndex]].alt}
+                loading="lazy"
+                decoding="async"
+              />
+              <button
+                type="button"
+                className="home-gallery-block__nav home-gallery-block__nav--prev"
+                onClick={goPrev}
+                aria-label="Previous image"
+              >
+                <IconArrowLeft />
+              </button>
+              <button
+                type="button"
+                className="home-gallery-block__nav home-gallery-block__nav--next"
+                onClick={goNext}
+                aria-label="Next image"
+              >
+                <IconArrowRight />
+              </button>
+              <div className="home-gallery-block__dots" role="tablist" aria-label="Image position">
+                {GALLERY_BLOCK_INDICES.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    role="tab"
+                    aria-selected={slideIndex === i}
+                    aria-label={`Image ${i + 1} of 4`}
+                    className={`home-gallery-block__dot ${slideIndex === i ? 'home-gallery-block__dot--active' : ''}`}
+                    onClick={() => setSlideIndex(i)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
