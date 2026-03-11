@@ -32,11 +32,11 @@ export function About() {
     <>
       <PageMeta
         title="About Us"
-        description="About Nanjil Oasis Happy Centre - Nanjil Oasis Parent Welfare Trust, parent-led care and rehabilitation for children with special needs since 2016."
+        description="About Nanjil Oasis Happy Centre - Nanjil Oasis Parent Welfare Trust, parents-led care and rehabilitation for children with special needs since 2016."
       />
       <PageHero
         title="About Us"
-        subtitle="Nanjil Oasis Parent Welfare Trust — parent-led care since 2016"
+        subtitle="Nanjil Oasis Parent Welfare Trust — parents-led care since 2016"
         image={pageHeroImages.about}
       />
 
@@ -75,14 +75,10 @@ export function About() {
               </ul>
 
               <p>
-                <strong>Nanjil Oasis Parent Welfare Trust</strong> is a <strong>parent-led initiative</strong>
-                founded with unwavering commitment to the <strong>protection, care, and rehabilitation</strong>
-                of children with intellectual disabilities. Established in <strong>2016</strong>, the Trust
-                emerged from the collective efforts of parents determined to create a
-                <strong>supportive, dignified, and empowering environment</strong> for their children.
+              <strong>Nanjil Oasis Parent Welfare Trust</strong> is a <strong>parents-led initiative </strong> founded with unwavering commitment to the <strong>protection, care, and rehabilitation</strong> of children with intellectual disabilities. Established in <strong>2016</strong>, the Trust emerged from the collective efforts of parents determined to create a <strong>supportive, dignified, and empowering environment</strong> for their children.
               </p>
               <p>
-                Our journey began long before our formal inception. Since <strong>2009</strong>, our parent
+                Our journey began long before our formal inception. Since <strong>2009</strong>, our parents
                 community has been actively working for the welfare of children with
                 intellectual disabilities. This <strong>enduring dedication</strong> laid the <strong>foundation for
                 the creation of the Trust</strong>.

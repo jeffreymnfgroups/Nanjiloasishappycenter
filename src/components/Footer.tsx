@@ -10,7 +10,7 @@ export function Footer() {
             <img src={LOGO_URL} alt="" className="footer__logo" aria-hidden />
             <p><strong>{SITE_NAME}</strong></p>
             <p>
-              A Unit of Multicare Centre for Kids with Special Needs. Nanjil Oasis Parent Welfare Trust — parent-led care, rehabilitation and education for children with intellectual disabilities since 2016.
+              A Unit of Multicare Centre for Kids with Special Needs. Nanjil Oasis Parent Welfare Trust — parents-led care, rehabilitation and education for children with intellectual disabilities since 2016.
             </p>
           </div>
           <div className="footer__links-col">

@@ -200,7 +200,7 @@ export function Home() {
               Building Futures<br />Beyond Limits
             </h2>
             <p className="lead">At Nanjil Oasis, we transform challenges into achievements through structured learning and holistic support.</p>
-            <p>Nanjil Oasis Parent Welfare Trust is a parent-led initiative established in 2016, committed to the protection, care, and rehabilitation of children with intellectual disabilities. Today <strong>40+ children</strong> grow, learn and thrive here with <strong>15+ dedicated educators</strong>.</p>
+            <p>Nanjil Oasis Parent Welfare Trust is a parents-led initiative established in 2016, committed to the protection, care, and rehabilitation of children with intellectual disabilities. Today <strong>40+ children</strong> grow, learn and thrive here with <strong>15+ dedicated educators</strong>.</p>
 
             {/* Condition badge strip */}
             <div className="home-about-tags">
